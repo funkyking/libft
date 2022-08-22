@@ -12,29 +12,28 @@
 
 #include "libft.h"
 
-int	ft_atoi(const char *string)
+int	ft_atoi(char const *string)
 {
-	int		i;
-	int		sign;
-	long	num;
+	int	sum;
+	int	sign;
+	int	found;
 
-	i = 0;
-	num = 0;
+	sum = 0;
 	sign = 1;
-	while ((string[i] >= 9 && string[i] <= 13) || string[i] == 32)
-		i++;
-	if (string[i] == '-')
-		sign *= -1;
-	if (string[i] == '-' || string[i] == '+')
-		i++;
-	while (string[i] >= '0' && string[i] <= '9')
+	found = 1;
+	while (*string == ' ' || *string == '\t' || *string == '\n' || *string == '\f' || *string == '\r')
+		string++;
+	if (*string == '-')
+		sign = -1;
+	if (*string == '-' || *string == '+')
+		string++;
+	while (*string && found)
 	{
-		num = (num * 10) + string[i] - '0';
-		i++;
-		if ((num * sign) > 2147483647)
-			return (-1);
-		if ((num * sign) < -2147483648)
-			return (0);
+		if (*string >= '0' && *string <= '9')
+			sum = sum * 10 + *string - '0';
+		else
+			found = 0;
+		string++;
 	}
-	return (num * sign);
+	return (sign * sum);
 }

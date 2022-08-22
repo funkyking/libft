@@ -12,10 +12,9 @@
 
 NAME		= 	libft.a
 CC 			= 	gcc
-FLAGS 		= 	-Wall -Wextra -Werror -c
+CFLAGS 		= 	-Wall -Wextra -Werror -c
 AR			= 	ar rcs
 
-SRCS_DIR	=	src/
 SRCS		= 	ft_atoi \
 				ft_bzero \
 				ft_calloc \
@@ -50,25 +49,23 @@ SRCS		= 	ft_atoi \
 				ft_substr \
 				ft_toupper \
 				ft_tolower \
-SRC_FILES+=$(addprefix $(SRCS_DIR),$(SRCS))
 
-SRCS	=	$(addprefix $(SRCS_DIR), $(addsuffix .c, $(SRC_FILES)))
-OBJS	=	$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRC_FILES)))
+OBJS = $(SRCS:.c=.o)
 
-all:		$(NAME)
+%.o : %.c
+		$(CC) $(CFLAGS) -c $< -o $(<.c=.o)
 
-$(NAME):	$(OBJS)
-			$(AR) $(NAME) $(OBJS)
+$(NAME): $(OBJS)
+		 $(AR) $(NAME) $(OBJS)
 
-$(OBJS_DIR)%.o	:	$(SRCS_DIR)%.c libft.h
-					$(CC) $(FLAGS) -c $< -o $@
+all: $(NAME)
 
 clean:
-			rm -f $(OBJS_DIR)
+		rm -f $(OBJS)
 
-fclean:		clean
-			rm -f $(NAME)
+fclean:	clean
+		rm -f $(NAME)
 
-re:			fclean all
+re: fclean all
 
-.PHONY:		all clean fclean re
+.PHONY:	all clean fclean re
